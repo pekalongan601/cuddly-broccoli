@@ -9,67 +9,88 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
 
     steps:
-      - name: 📥 Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: ☕ Setup Java
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: 🐦 Setup Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
 
-      - name: 📦 Flutter Pub Get
+      - name: Flutter Version
+        run: flutter --version
+
+      - name: Install Dependencies
         run: flutter pub get
 
-      - name: 🔨 Build Release APK
+      - name: Build APK
         run: flutter build apk --release
 
-      - name: 📂 Verify APK
-        run: |
-          ls -lah build/app/outputs/flutter-apk/
+      - name: Verify APK
+        run: ls -R build/app/outputs/flutter-apk/
 
-      - name: 🤖 Start Android Emulator
+      - name: Run Emulator & Capture Screenshot
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 34
+          api-level: 30
           arch: x86_64
-          profile: pixel_6
+          profile: pixel_4
           emulator-options: >
             -no-window
             -gpu swiftshader_indirect
             -noaudio
             -no-boot-anim
+            -accel off
+          disable-animations: true
           script: |
+            adb kill-server
+            adb start-server
+
             adb wait-for-device
 
+            echo "Waiting for Android boot..."
+
+            until adb shell getprop sys.boot_completed | grep "1"; do
+              sleep 5
+            done
+
+            sleep 20
+
+            adb devices
+
             echo "Installing APK..."
+
+            adb install -r build/app/outputs/flutter-apk/app-release.apk || \
             adb install build/app/outputs/flutter-apk/app-release.apk
 
             echo "Launching app..."
+
             adb shell monkey -p com.seascape.banking -c android.intent.category.LAUNCHER 1
 
-            echo "Waiting..."
-            sleep 15
+            sleep 12
 
-            echo "Taking screenshot..."
             adb exec-out screencap -p > home.png
 
-      - name: 📤 Upload APK
+            adb pull /sdcard/Download . || true
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: 📸 Upload Screenshot
+      - name: Upload Screenshot
         uses: actions/upload-artifact@v4
         with:
-          name: home-screenshot
+          name: screenshot
           path: home.png
