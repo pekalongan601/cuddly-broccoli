@@ -56,4 +56,10 @@ abstract final class AppColors {
   // ─── QRIS ─────────────────────────────────────────────────
   static const Color qrisBg = Color(0xFF151515);
   static const Color qrisCorner = AppColors.orange;
+
+  // ─── Orange card utilities ────────────────────────────────
+  static const Color riwayatBg = Color(0xFFCF4D00);
+  static const Color depositCtaBg = Color(0xFFFFD19A);
+  static const Color depositCtaText = Color(0xFF713600);
+  static const Color savingsSubText = Color(0xFFFFD2AF);
 }

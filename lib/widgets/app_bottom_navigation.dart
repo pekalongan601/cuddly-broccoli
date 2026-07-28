@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/constants/app_colors.dart';
+import '../core/constants/layout.dart';
 
 /// SeaBank-style bottom navigation bar with a prominent centre QRIS button.
 class AppBottomNavigation extends StatelessWidget {
@@ -20,18 +21,10 @@ class AppBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const List<String> routes = <String>[
-      '/home',
-      '/transfer',
-      '/qris',
-      '/deposit',
-      '/profile',
+      '/home', '/transfer', '/qris', '/deposit', '/profile',
     ];
     const List<String> labels = <String>[
-      'Beranda',
-      'Bayar/Transfer',
-      'QRIS',
-      'Deposito',
-      'Saya',
+      'Beranda', 'Bayar/Transfer', 'QRIS', 'Deposito', 'Saya',
     ];
     const List<IconData> inactiveIcons = <IconData>[
       Icons.home_outlined,
@@ -51,30 +44,27 @@ class AppBottomNavigation extends StatelessWidget {
     final int selected = _selectedIndex;
 
     return SizedBox(
-      height: 94,
+      height: Layout.navHeight,
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
         children: <Widget>[
-          // ── Bottom bar background ──────────────────────────
           Positioned(
             left: 0,
             right: 0,
             bottom: 0,
-            height: 74,
+            height: Layout.navBarHeight,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 border: Border(
-                  top: BorderSide(
-                    color: Theme.of(context).dividerColor,
-                  ),
+                  top: BorderSide(color: Theme.of(context).dividerColor),
                 ),
                 boxShadow: const <BoxShadow>[
                   BoxShadow(
                     color: Color(0x0A000000),
-                    blurRadius: 8,
-                    offset: Offset(0, -2),
+                    blurRadius: 6,
+                    offset: Offset(0, -1),
                   ),
                 ],
               ),
@@ -85,9 +75,7 @@ class AppBottomNavigation extends StatelessWidget {
                     child: _NavItem(
                       active: active,
                       center: index == 2,
-                      icon: active
-                          ? activeIcons[index]
-                          : inactiveIcons[index],
+                      icon: active ? activeIcons[index] : inactiveIcons[index],
                       label: labels[index],
                       onTap: () => context.go(routes[index]),
                     ),
@@ -96,7 +84,6 @@ class AppBottomNavigation extends StatelessWidget {
               ),
             ),
           ),
-          // ── FAB-style QRIS button ──────────────────────────
           Semantics(
             button: true,
             selected: selected == 2,
@@ -108,19 +95,19 @@ class AppBottomNavigation extends StatelessWidget {
                 onTap: () => context.go('/qris'),
                 customBorder: const CircleBorder(),
                 child: Container(
-                  height: 62,
-                  width: 62,
+                  height: Layout.navFabSize,
+                  width: Layout.navFabSize,
                   decoration: BoxDecoration(
                     color: AppColors.orange,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: Theme.of(context).colorScheme.surface,
-                      width: 4,
+                      width: 3,
                     ),
                     boxShadow: const <BoxShadow>[
                       BoxShadow(
                         color: Color(0x40FF6600),
-                        blurRadius: 8,
+                        blurRadius: 6,
                       ),
                     ],
                   ),
@@ -128,7 +115,7 @@ class AppBottomNavigation extends StatelessWidget {
                   child: const Icon(
                     Icons.qr_code_scanner_rounded,
                     color: Colors.white,
-                    size: 32,
+                    size: 26,
                   ),
                 ),
               ),
@@ -139,8 +126,6 @@ class AppBottomNavigation extends StatelessWidget {
     );
   }
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
 
 class _NavItem extends StatelessWidget {
   const _NavItem({
@@ -159,8 +144,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color =
-        active ? AppColors.orange : AppColors.navInactive;
+    final Color color = active ? AppColors.orange : AppColors.navInactive;
     return Semantics(
       button: true,
       selected: active,
@@ -171,10 +155,10 @@ class _NavItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             if (center)
-              const SizedBox(height: 24)
+              const SizedBox(height: Layout.s20)
             else
-              Icon(icon, color: color, size: 28),
-            const SizedBox(height: 4),
+              Icon(icon, color: color, size: Layout.iconNav),
+            const SizedBox(height: 2),
             Text(
               label,
               textAlign: TextAlign.center,
@@ -182,7 +166,7 @@ class _NavItem extends StatelessWidget {
               overflow: TextOverflow.fade,
               style: TextStyle(
                 color: color,
-                fontSize: 11,
+                fontSize: Layout.fsNavLabel,
                 fontWeight: active ? FontWeight.w600 : FontWeight.w400,
               ),
             ),

@@ -35,7 +35,7 @@ class SoftCard extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             color: Color(0x0B000000),
-            blurRadius: 8,
+            blurRadius: 6,
             offset: Offset(0, 2),
           ),
         ],
@@ -61,8 +61,8 @@ class OrangeCircleIcon extends StatelessWidget {
   const OrangeCircleIcon({
     super.key,
     required this.icon,
-    this.size = 42,
-    this.iconSize = 24,
+    this.size = 36,
+    this.iconSize = 20,
     this.background,
     this.color,
   });
@@ -110,7 +110,7 @@ class UserAvatar extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      child: Icon(Icons.person_rounded, color: iconColor, size: size * 0.68),
+      child: Icon(Icons.person_rounded, color: iconColor, size: size * 0.6),
     );
   }
 }
@@ -136,9 +136,7 @@ class NotificationButton extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               shape: CircleBorder(
-                side: BorderSide(
-                  color: dark ? Colors.white70 : AppColors.border,
-                ),
+                side: BorderSide(color: dark ? Colors.white54 : AppColors.border),
               ),
               child: InkWell(
                 customBorder: const CircleBorder(),
@@ -149,28 +147,27 @@ class NotificationButton extends StatelessWidget {
                 child: Icon(
                   Icons.notifications_none_rounded,
                   color: dark ? Colors.white : AppColors.ink,
-                  size: 32,
+                  size: Layout.iconNotification,
                 ),
               ),
             ),
           ),
           Positioned(
-            right: -2,
-            top: 0,
+            right: -1,
+            top: -1,
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Layout.spacingXs + 2,
-                vertical: 4,
-              ),
+              width: Layout.notificationBadgeSize,
+              height: Layout.notificationBadgeSize,
               decoration: const BoxDecoration(
                 color: AppColors.orange,
                 shape: BoxShape.circle,
               ),
+              alignment: Alignment.center,
               child: const Text(
                 '25',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: 10,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -192,7 +189,7 @@ class AppTextButton extends StatelessWidget {
     required this.label,
     required this.onTap,
     this.filled = true,
-    this.height = 48,
+    this.height = 40,
   });
 
   final String label;
@@ -210,28 +207,24 @@ class AppTextButton extends StatelessWidget {
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.orange,
                 foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Layout.buttonRadius),
                 ),
               ),
-              child: Text(
-                label,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
+              child: Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
             )
           : OutlinedButton(
               onPressed: onTap,
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.orange,
                 side: const BorderSide(color: AppColors.orange, width: 1.5),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Layout.buttonRadius),
                 ),
               ),
-              child: Text(
-                label,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
+              child: Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
             ),
     );
   }
@@ -256,13 +249,7 @@ class SectionTitle extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          child: Text(text, style: const TextStyle(fontSize: Layout.fsSectionTitle, fontWeight: FontWeight.w700)),
         ),
         if (trailing != null) trailing!,
       ],

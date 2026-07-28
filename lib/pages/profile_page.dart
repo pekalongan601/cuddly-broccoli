@@ -7,7 +7,7 @@ import '../core/constants/layout.dart';
 import '../providers/app_state_provider.dart';
 import '../widgets/common.dart';
 
-/// Profile / "Saya" screen with user info, notices, and settings list.
+/// Profile / "Saya" screen.
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
@@ -17,14 +17,7 @@ class ProfilePage extends ConsumerWidget {
 
     return Stack(
       children: <Widget>[
-        // Orange header background
-        const Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 230,
-          child: ColoredBox(color: AppColors.orange),
-        ),
+        const Positioned(top: 0, left: 0, right: 0, height: 180, child: ColoredBox(color: AppColors.orange)),
         SafeArea(
           bottom: false,
           child: CustomScrollView(
@@ -32,36 +25,19 @@ class ProfilePage extends ConsumerWidget {
             physics: const BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                  Layout.pagePadding,
-                  14,
-                  Layout.pagePadding,
-                  26,
-                ),
+                padding: const EdgeInsets.fromLTRB(Layout.pagePadding, 10, Layout.pagePadding, 20),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(<Widget>[
                     _profileHeader(state),
-                    const SizedBox(height: 43),
-                    _notice(
-                      Icons.fingerprint_rounded,
-                      'Log in dengan sidik jari',
-                      'Aktifkan verifikasi sidik jari untuk log in lebih\n'
-                          'cepat dan aman tanpa password!',
-                      'Aktifkan Sekarang',
-                    ),
-                    const SizedBox(height: 19),
-                    _notice(
-                      Icons.mark_email_read_outlined,
-                      'Verifikasi Email Kamu Sekarang',
-                      'Dapatkan info transaksi & promo, serta\n'
-                          'pulihkan password dengan mudah!',
-                      'Verifikasi Email',
-                    ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: Layout.s28),
+                    _notice(Icons.fingerprint_rounded, 'Log in dengan sidik jari', 'Aktifkan verifikasi sidik jari untuk log in lebih\ncepat dan aman tanpa password!', 'Aktifkan Sekarang'),
+                    const SizedBox(height: Layout.s12),
+                    _notice(Icons.mark_email_read_outlined, 'Verifikasi Email Kamu Sekarang', 'Dapatkan info transaksi & promo, serta\npulihkan password dengan mudah!', 'Verifikasi Email'),
+                    const SizedBox(height: Layout.s14),
                     _settings(context),
-                    const SizedBox(height: 21),
+                    const SizedBox(height: Layout.s14),
                     _logout(context),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: Layout.s20),
                   ]),
                 ),
               ),
@@ -72,41 +48,18 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  //  Profile Header
-  // ═══════════════════════════════════════════════════════════════════════════
   Widget _profileHeader(AppState state) {
     return Row(
       children: <Widget>[
-        const UserAvatar(
-          size: 74,
-          color: Colors.white,
-          iconColor: AppColors.orange,
-        ),
-        const SizedBox(width: Layout.spacingLg),
+        const UserAvatar(size: Layout.avatarSizeProfile, color: Colors.white, iconColor: AppColors.orange),
+        const SizedBox(width: Layout.s12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                state.userName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                state.phoneNumber,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text(state.userName, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white, fontSize: Layout.fsName, fontWeight: FontWeight.w600)),
+              const SizedBox(height: Layout.s2),
+              Text(state.phoneNumber, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
             ],
           ),
         ),
@@ -115,221 +68,107 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  //  Notice Cards
-  // ═══════════════════════════════════════════════════════════════════════════
-  Widget _notice(
-    IconData icon,
-    String title,
-    String description,
-    String action,
-  ) {
+  Widget _notice(IconData icon, String title, String description, String action) {
     return SoftCard(
       radius: Layout.cardRadiusMd,
-      padding:
-          const EdgeInsets.fromLTRB(18, 20, 14, 20),
+      padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: OrangeCircleIcon(
-              icon: icon,
-              size: 40,
-              iconSize: 22,
-            ),
-          ),
-          const SizedBox(width: 15),
+          OrangeCircleIcon(icon: icon, size: 34, iconSize: 18),
+          const SizedBox(width: Layout.s10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: AppColors.muted,
-                    height: 1.25,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  action,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    color: AppColors.linkBlue,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                Text(title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                const SizedBox(height: Layout.s4),
+                Text(description, style: const TextStyle(fontSize: Layout.fsBodySmall, color: AppColors.muted, height: 1.2)),
+                const SizedBox(height: Layout.s2),
+                Text(action, style: const TextStyle(fontSize: 13, color: AppColors.linkBlue, fontWeight: FontWeight.w500)),
               ],
             ),
           ),
-          const Icon(
-            Icons.close_rounded,
-            size: 30,
-            color: AppColors.muted,
-          ),
+          const Icon(Icons.close_rounded, size: 22, color: AppColors.muted),
         ],
       ),
     );
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  //  Settings List
-  // ═══════════════════════════════════════════════════════════════════════════
   Widget _settings(BuildContext context) {
     const List<_ProfileItem> primary = <_ProfileItem>[
       _ProfileItem('Profil Saya', Icons.person_outline_rounded),
-      _ProfileItem(
-          'Keamanan Akun', Icons.verified_user_outlined),
-      _ProfileItem(
-          'e-Statement', Icons.receipt_long_outlined),
-      _ProfileItem('Pengaturan Limit dan Pembayaran',
-          Icons.credit_card_outlined),
-      _ProfileItem('Pengaturan BI-FAST',
-          Icons.phonelink_setup_outlined),
-      _ProfileItem(
-          'Pengaturan Umum', Icons.settings_outlined),
-      _ProfileItem(
-          'Undang Teman', Icons.group_add_outlined),
-      _ProfileItem(
-          'Pusat Bantuan', Icons.lightbulb_outline_rounded),
-      _ProfileItem('Chat dengan SeaBank',
-          Icons.chat_bubble_outline_rounded),
-      _ProfileItem(
-          'Lokasi SeaBank', Icons.location_city_outlined),
-      _ProfileItem(
-          'Beri Masukan', Icons.feedback_outlined),
+      _ProfileItem('Keamanan Akun', Icons.verified_user_outlined),
+      _ProfileItem('e-Statement', Icons.receipt_long_outlined),
+      _ProfileItem('Pengaturan Limit dan Pembayaran', Icons.credit_card_outlined),
+      _ProfileItem('Pengaturan BI-FAST', Icons.phonelink_setup_outlined),
+      _ProfileItem('Pengaturan Umum', Icons.settings_outlined),
+      _ProfileItem('Undang Teman', Icons.group_add_outlined),
+      _ProfileItem('Pusat Bantuan', Icons.lightbulb_outline_rounded),
+      _ProfileItem('Chat dengan SeaBank', Icons.chat_bubble_outline_rounded),
+      _ProfileItem('Lokasi SeaBank', Icons.location_city_outlined),
+      _ProfileItem('Beri Masukan', Icons.feedback_outlined),
     ];
 
     return SoftCard(
       radius: Layout.cardRadiusMd,
-      padding: const EdgeInsets.symmetric(horizontal: Layout.spacingXxl),
+      padding: const EdgeInsets.symmetric(horizontal: Layout.s20),
       child: Column(
         children: <Widget>[
-          ...primary.map(
-            (_ProfileItem item) => _settingRow(context, item),
-          ),
-          _settingRow(
-            context,
-            const _ProfileItem(
-                'Developer Settings', Icons.developer_mode_rounded),
-            developer: true,
-          ),
+          ...primary.map((_ProfileItem item) => _settingRow(context, item)),
+          _settingRow(context, const _ProfileItem('Developer Settings', Icons.developer_mode_rounded), developer: true),
         ],
       ),
     );
   }
 
-  Widget _settingRow(
-    BuildContext context,
-    _ProfileItem item, {
-    bool developer = false,
-  }) {
+  Widget _settingRow(BuildContext context, _ProfileItem item, {bool developer = false}) {
     return InkWell(
       onTap: () {
         if (developer) {
           context.push('/developer-settings');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${item.label} dipilih')),
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${item.label} dipilih')));
         }
       },
       child: Container(
-        constraints: const BoxConstraints(minHeight: 96),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: AppColors.line),
-          ),
-        ),
+        constraints: const BoxConstraints(minHeight: 64),
+        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.line))),
         child: Row(
           children: <Widget>[
-            Icon(
-              item.icon,
-              size: 32,
-              color: developer
-                  ? AppColors.orange
-                  : AppColors.ink,
-            ),
-            const SizedBox(width: 28),
+            Icon(item.icon, size: 24, color: developer ? AppColors.orange : AppColors.ink),
+            const SizedBox(width: Layout.s18),
             Expanded(
-              child: Text(
-                item.label,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: developer
-                      ? FontWeight.w600
-                      : FontWeight.w400,
-                  color: developer ? AppColors.orange : null,
-                ),
-              ),
+              child: Text(item.label, style: TextStyle(fontSize: 15, fontWeight: developer ? FontWeight.w600 : FontWeight.w400, color: developer ? AppColors.orange : null)),
             ),
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 31,
-              color: AppColors.muted,
-            ),
+            const Icon(Icons.chevron_right_rounded, size: 24, color: AppColors.muted),
           ],
         ),
       ),
     );
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  //  Logout
-  // ═══════════════════════════════════════════════════════════════════════════
   Widget _logout(BuildContext context) {
     return SoftCard(
       radius: Layout.cardRadiusXs,
       onTap: () => showDialog<void>(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text('Log Out'),
-          content: const Text(
-              'Anda akan keluar dari sesi demo lokal ini.'),
+          title: const Text('Log Out', style: TextStyle(fontSize: 18)),
+          content: const Text('Anda akan keluar dari sesi demo lokal ini.', style: TextStyle(fontSize: 14)),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Batal'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Log Out'),
-            ),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Batal', style: TextStyle(fontSize: 14))),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Log Out', style: TextStyle(fontSize: 14))),
           ],
         ),
       ),
-      child: const SizedBox(
-        height: 76,
-        child: Center(
-          child: Text(
-            'Log Out',
-            style: TextStyle(
-              color: AppColors.orange,
-              fontSize: 21,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
+      child: const SizedBox(height: 56, child: Center(child: Text('Log Out', style: TextStyle(color: AppColors.orange, fontSize: 16, fontWeight: FontWeight.w700)))),
     );
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
-
 class _ProfileItem {
   const _ProfileItem(this.label, this.icon);
-
   final String label;
   final IconData icon;
 }
