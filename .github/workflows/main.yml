@@ -1,0 +1,75 @@
+name: Build APK + Emulator Screenshot
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: 📦 Flutter Pub Get
+        run: flutter pub get
+
+      - name: 🔨 Build Release APK
+        run: flutter build apk --release
+
+      - name: 📂 Verify APK
+        run: |
+          ls -lah build/app/outputs/flutter-apk/
+
+      - name: 🤖 Start Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: >
+            -no-window
+            -gpu swiftshader_indirect
+            -noaudio
+            -no-boot-anim
+          script: |
+            adb wait-for-device
+
+            echo "Installing APK..."
+            adb install build/app/outputs/flutter-apk/app-release.apk
+
+            echo "Launching app..."
+            adb shell monkey -p com.seascape.banking -c android.intent.category.LAUNCHER 1
+
+            echo "Waiting..."
+            sleep 15
+
+            echo "Taking screenshot..."
+            adb exec-out screencap -p > home.png
+
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: 📸 Upload Screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: home-screenshot
+          path: home.png
