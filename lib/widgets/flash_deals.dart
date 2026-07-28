@@ -66,7 +66,7 @@ class _FlashDealsState extends State<FlashDeals> {
                 const Icon(Icons.timer_outlined, color: AppColors.orange, size: 22),
                 const SizedBox(width: Layout.s4),
                 const Expanded(
-                  child: Text('Deposito Flash Deals', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic)),
+                  child: Text('Deposito Flash Deals', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic)),
                 ),
                 const Text('Dimulai\ndalam', textAlign: TextAlign.right, style: TextStyle(fontSize: 12, color: Color(0xFF707070), height: 1.0)),
                 const SizedBox(width: Layout.s4),

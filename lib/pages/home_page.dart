@@ -106,12 +106,12 @@ class HomePage extends ConsumerWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-            right: -48,
-            top: -56,
+            right: -55,
+            top: -65,
             child: Icon(
               Icons.currency_exchange_rounded,
               color: Colors.white.withOpacity(0.08),
-              size: 240,
+              size: 280,
             ),
           ),
           Column(
@@ -154,7 +154,7 @@ class HomePage extends ConsumerWidget {
                           children: <Widget>[
                             Text('Riwayat', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700)),
                             SizedBox(width: 4),
-                            Icon(Icons.chevron_right_rounded, color: Colors.white, size: 18),
+                            Icon(Icons.chevron_right_rounded, color: Colors.white, size: Layout.iconChevron),
                           ],
                         ),
                       ),
