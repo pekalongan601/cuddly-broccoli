@@ -29,7 +29,7 @@ class ProfilePage extends ConsumerWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(<Widget>[
                     _profileHeader(state),
-                    const SizedBox(height: Layout.s28),
+                    const SizedBox(height: Layout.s24),
                     _notice(Icons.fingerprint_rounded, 'Log in dengan sidik jari', 'Aktifkan verifikasi sidik jari untuk log in lebih\ncepat dan aman tanpa password!', 'Aktifkan Sekarang'),
                     const SizedBox(height: Layout.s12),
                     _notice(Icons.mark_email_read_outlined, 'Verifikasi Email Kamu Sekarang', 'Dapatkan info transaksi & promo, serta\npulihkan password dengan mudah!', 'Verifikasi Email'),

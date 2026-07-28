@@ -187,7 +187,7 @@ class HomePage extends ConsumerWidget {
                 children: <Widget>[
                   Expanded(child: _accountColumn('Tabungan', visibleMoney(state, state.savingsBalance), '2,5% p.a. cair harian')),
                   const SizedBox(width: Layout.s12),
-                  Expanded(child: _depositColumn(state)),
+                  Expanded(child: _depositColumn(context, state)),
                 ],
               ),
             ],
@@ -216,7 +216,7 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget _depositColumn(AppState state) {
+  Widget _depositColumn(BuildContext context, AppState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
