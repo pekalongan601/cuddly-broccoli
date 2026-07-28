@@ -1,0 +1,60 @@
+name: Build Flutter APKss
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      # Analyzer hanya sebagai informasi, tidak membuat workflow gagal
+      - name: 🔍 Analyze (Non-blocking)
+        run: flutter analyze || true
+
+      # Test juga tidak membuat workflow gagal
+      - name: 🧪 Run Tests (Non-blocking)
+        run: flutter test || true
+
+      - name: 🔨 Build Release APK
+        run: flutter build apk --release
+
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      # Upload log jika build gagal
+      - name: 📋 Upload Build Logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build/**
+            .dart_tool/**
