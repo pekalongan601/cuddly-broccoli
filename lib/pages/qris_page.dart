@@ -74,7 +74,7 @@ class _QrisPageState extends State<QrisPage>
                       size: 29,
                     ),
                   ),
-                  const SizedBox(width: Layout.spacingSm),
+                  const SizedBox(width: Layout.s8),
                   const Expanded(
                     child: FittedBox(
                       alignment: Alignment.centerLeft,
@@ -249,9 +249,9 @@ class _QrisPageState extends State<QrisPage>
       showDragHandle: true,
       builder: (_) => const Padding(
         padding: EdgeInsets.fromLTRB(
-          Layout.spacingXxl,
+          Layout.s24,
           0,
-          Layout.spacingXxl,
+          Layout.s24,
           36,
         ),
         child: Column(
